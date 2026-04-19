@@ -115,4 +115,10 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity.ok(ApiResponse.success("User deleted successfully", null));
     }
+
+    @GetMapping("/get")
+    public String get()
+    {
+        return "hi";
+    }
 }
