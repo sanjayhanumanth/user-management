@@ -30,9 +30,6 @@ public class SwaggerConfig {
                                 .url("https://opensource.org/licenses/MIT")))
                 .externalDocs(new ExternalDocumentation()
                         .description("Project Repository")
-                        .url("https://github.com/example/user-management"))
-                .servers(List.of(
-                        new Server().url("http://localhost:8071").description("Local Development Server")
-                ));
+                        .url("https://github.com/example/user-management"));
     }
 }
