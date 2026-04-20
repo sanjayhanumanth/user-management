@@ -1,20 +1,27 @@
-# Use Java 21 (matches your pom.xml)
-FROM eclipse-temurin:21-jdk
+# -------- Stage 1: Build --------
+FROM maven:3.9-eclipse-temurin-21 AS build
 
-# Set working directory inside container
 WORKDIR /app
 
-# Copy entire project
-COPY . .
+# Copy only pom first (better caching)
+COPY pom.xml .
+RUN mvn dependency:go-offline
 
-# Install Maven
-RUN apt-get update && apt-get install -y maven
+# Copy source code
+COPY src ./src
 
-# Build the Spring Boot JAR
+# Build jar
 RUN mvn clean package -DskipTests
 
-# Expose your app port
+
+# -------- Stage 2: Run --------
+FROM eclipse-temurin:21-jdk-jammy
+
+WORKDIR /app
+
+# Copy only the built jar from build stage
+COPY --from=build /app/target/user-management-1.0.0.jar app.jar
+
 EXPOSE 8071
 
-# Run the application
-CMD ["java", "-jar", "target/user-management-1.0.0.jar"]
+CMD ["java", "-jar", "app.jar"]

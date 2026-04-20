@@ -116,7 +116,7 @@ public class UserController {
         return ResponseEntity.ok(ApiResponse.success("User deleted successfully", null));
     }
 
-    @GetMapping("/get")
+    @GetMapping("/get123")
     public String get()
     {
         return "hi";
