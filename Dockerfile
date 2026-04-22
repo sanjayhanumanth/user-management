@@ -1,19 +1,6 @@
-# -------- Stage 1: Build --------
-FROM maven:3.9-eclipse-temurin-21 AS build
+FROM maven:3.9-eclipse-temurin-21
 WORKDIR /app
-COPY pom.xml .
-RUN mvn dependency:go-offline
-COPY src ./src
+COPY . .
 RUN mvn clean package -DskipTests
-
-
-# -------- Stage 2: Run (SMALLER) --------
-FROM eclipse-temurin:21-jre-jammy
-
-WORKDIR /app
-
-COPY --from=build /app/target/user-management-1.0.0.jar app.jar
-
 EXPOSE 8071
-
-CMD ["java", "-jar", "app.jar"]
+CMD ["java", "-jar", "target/user-management-1.0.0.jar"]
